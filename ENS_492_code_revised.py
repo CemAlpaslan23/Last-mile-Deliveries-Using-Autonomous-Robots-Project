@@ -49,7 +49,7 @@ t = [[C_geo[i][j] / 6 for j in range(A)] for i in range(A)] #Time calculation,Ti
 
 EVRPTW = gurobipy.Model()
 
-
+# Adding the gurobi parameters
 EVRPTW.setParam('MIPFocus', 3)
 EVRPTW.setParam('MIPGapAbs', 100)
 EVRPTW.setParam('TimeLimit', 60)
@@ -72,29 +72,29 @@ EVRPTW.addConstrs(quicksum(x[i,j] for i in range(A) if i != j) == 1 for j in ran
 
 EVRPTW.addConstrs(b[i] + s[i] + t[i][j] - M * (1-x[i,j]) <= b[j] for i in range(A) for j in range(1,A))
 
-EVRPTW.addConstrs(b[j] >=e[j] for j in range(A)) #A
+EVRPTW.addConstrs(b[j] >=e[j] for j in range(A)) 
 
-EVRPTW.addConstrs(b[j] <=l[j] for j in range(A)) #A
+EVRPTW.addConstrs(b[j] <=l[j] for j in range(A)) 
 
-EVRPTW.addConstrs(u[j] >= q[j] for j in range(A)) #A
+EVRPTW.addConstrs(u[j] >= q[j] for j in range(A)) 
 
-EVRPTW.addConstrs(u[j] <= C for j in range(A)) #A
+EVRPTW.addConstrs(u[j] <= C for j in range(A)) 
 
-EVRPTW.addConstrs(u[j] <= (u[i] - (q[i] * x[i,j]) + (C * (1-x[i,j]))) for i in range(A) for j in range(1,A) if i!=j) #A, 1,A
+EVRPTW.addConstrs(u[j] <= (u[i] - (q[i] * x[i,j]) + (C * (1-x[i,j]))) for i in range(A) for j in range(1,A) if i!=j) 
 
 EVRPTW.addConstr(u[0] >= 0) 
 
-EVRPTW.addConstr(u[0] <= C) #Çok gerekli değil
+EVRPTW.addConstr(u[0] <= C) 
 
-EVRPTW.addConstr(quicksum(x[0,j] for j in range(1,A)) >= 1) #Depodan çıkan araç sayısı 1 den büyük olsun
+EVRPTW.addConstr(quicksum(x[0,j] for j in range(1,A)) >= 1) 
 
-EVRPTW.addConstrs(y[j] >= 0 for j in range(1,A)) #Çok gerekli değil #A
+EVRPTW.addConstrs(y[j] >= 0 for j in range(1,A)) 
 
 EVRPTW.addConstrs(y[j] <= (y[i] - (h * C_geo[i][j] * x[i,j]) + Q * (1 - x[i,j])) for i in range(A) for j in range(1,A) if i!=j)
 
 EVRPTW.addConstr(y[0] == Q)
 
-EVRPTW.addConstrs(y[i] >= quicksum(h * C_geo[i][j] * x[i,j] for j in range(1,A)) for i in range(A)) # A, (1,A)
+EVRPTW.addConstrs(y[i] >= quicksum(h * C_geo[i][j] * x[i,j] for j in range(1,A)) for i in range(A)) 
 
 
 #Finding the solution
@@ -144,3 +144,4 @@ plt.text(xcoord[0],ycoord[0],'depot',fontdict=dict(color='black', alpha=0.5, siz
 plt.plot(xcoord[0],ycoord[0],c="r",marker='s')
 plt.scatter(xcoord[1:],ycoord[1:],c="b") #Coordinates x and y of the customer nodes have marked with the blue color
 plt.title("Mathematical Formulation Solution")
+
