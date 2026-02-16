@@ -198,3 +198,4 @@ plt.plot(coorddf["Latitude"][0],coorddf["Longitude"][0],c="r",marker='s')
 plt.scatter(coorddf["Latitude"][1:],coorddf["Longitude"][1:],c="b") #Coordinates x and y of the customer nodes has marked with the blue color
 plt.title("Savings Algorithm Solution")
 
+
